@@ -1,0 +1,39 @@
+---
+title: "analysis"
+author: "you"
+date: "2/16/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE
+)
+library(ampvis2)
+```
+
+# Load some data
+```{r}
+# add and load your own or use fx AalborgWWTPs
+```
+
+# Do some QC
+```{r}
+# filter some samples or taxa
+```
+
+# Alpha-diversity check, octave plots
+```{r}
+
+```
+
+# Make a simple overview heatmap
+```{r}
+
+```
+
+# Fix this code
+```{r}
+data.frame(class = unlist(lapply(mpg, classss)))
+```
+
