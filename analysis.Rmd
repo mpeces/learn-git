@@ -10,30 +10,59 @@ knitr::opts_chunk$set(
   echo = TRUE
 )
 library(ampvis2)
+library(tidyverse) 
 ```
 
 # Load some data
 ```{r}
-# add and load your own or use fx AalborgWWTPs
+asvtable <- amp_import_usearch(otutab = "C:/Users/Lab PC/OneDrive - Aalborg Universitet/Aalborg/5. Research AAU/210601_Modelling/Damhusaaen/ASVtable_notax.tsv",  
+                               sintax = "C:/Users/Lab PC/OneDrive - Aalborg Universitet/Aalborg/5. Research AAU/210601_Modelling/Damhusaaen/ASVs.R1.sintax") 
+ 
+metadata <- readxl::read_excel("C:/Users/Lab PC/OneDrive - Aalborg Universitet/Aalborg/5. Research AAU/210601_Modelling/Damhusaaen/metadata_DAM_sequencing.xlsx") 
+ 
+metadata$SampleDate <- as.Date(metadata$SampleDate , format = "%Y-%m-%d") 
+metadata$year <- lubridate::year(metadata$SampleDate) 
+ 
+allampvis <- amp_load(otutable = asvtable,  
+                      metadata = metadata) 
 ```
 
 # Do some QC
 ```{r}
-# filter some samples or taxa
+allampvis <- amp_subset_samples(allampvis, minreads = 10000, normalise = FALSE) 
+ 
+allampvis <- amp_subset_samples(allampvis, year == "2019") 
+ 
+rm(asvtable, metadata) 
 ```
 
 # Alpha-diversity check, octave plots
 ```{r}
-
+alpha_div <- amp_alphadiv(allampvis, 
+             rarefy = 10080) 
+ 
+amp_octave(allampvis, 
+           tax_aggregate = "OTU") 
+ 
+ggsave("octave.png", 
+       plot = last_plot(), 
+       height = 40, 
+       width = 40, 
+       dpi = 300) 
 ```
 
 # Make a simple overview heatmap
 ```{r}
-
+amp_heatmap(allampvis, 
+            group_by = "SampleDate", 
+            facet_by = "SampleContent", 
+            tax_aggregate = "Genus", 
+            tax_show = 15, 
+            plot_colorscale = "sqrt") 
 ```
 
 # Fix this code
 ```{r}
-data.frame(class = unlist(lapply(mpg, classss)))
+data.frame(class = unlist(lapply(mpg, class)))
 ```
 
